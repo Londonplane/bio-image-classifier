@@ -1,96 +1,89 @@
 # Bio Image Classifier
 
-A simple web application that can classify images into three categories: Human, Animal, or Plant.
+A web application that classifies images into three categories: people, animals, and plants. The application uses Clarifai API for image recognition and provides a user-friendly interface for uploading and viewing classification results.
 
 ## Features
 
-- **Image Classification**:
-  - Uses Clarifai API for deep learning based classification
-  - Has local backup system when API is unavailable
-- **User-Friendly Interface**:
-  - Easy to use web interface
-  - Upload images and see results instantly
-- **High Accuracy**:
-  - Uses pre-trained deep learning models
-  - Smart rules for better results
-
-## How to Install
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/Londonplane/bio-image-classifier.git
-   cd bio-image-classifier
-   ```
-
-2. Create virtual environment (recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # For Linux/Mac
-   # OR
-   venv\Scripts\activate  # For Windows
-   ```
-
-3. Install required packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Set up environment variables:
-   - Create a new file named `.env` in the project root
-   - Add your Clarifai API key to the file:
-     ```
-     CLARIFAI_API_KEY=your_api_key_here
-     ```
-   - Get your API key from [Clarifai website](https://clarifai.com/)
-
-## How to Use
-
-1. Start the application:
-   ```bash
-   python app.py
-   ```
-
-2. Open your web browser and go to:
-   ```
-   http://localhost:5000
-   ```
-
-3. Upload an image and click "Submit"
-4. See the classification result
+- Multiple image upload support
+- Real-time image preview
+- Image removal before upload
+- Classification into three categories:
+  - People
+  - Animals
+  - Plants
+- Confidence score display
+- Responsive design
+- Error handling and user feedback
 
 ## Project Structure
 
-- `app.py`: Main Flask application
-- `model.py`: Image classification logic
-- `templates/`: HTML files
-- `uploads/`: Folder for uploaded images
-- `requirements.txt`: Required Python packages
+```
+bio-image-classifier/
+├── app.py              # Main Flask application
+├── model.py            # Image classification model
+├── requirements.txt    # Python dependencies
+├── uploads/           # Directory for uploaded images
+└── templates/         # HTML templates
+    ├── index.html     # Upload page
+    └── result.html    # Results display page
+```
 
-## Notes
+## Setup
 
-1. **API Limits**:
-   - Free Clarifai account has API call limits
-   - Local system works when API is not available
+1. Create a virtual environment:
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-2. **API Key Safety**:
-   - Keep your API key secret
-   - Never share your `.env` file
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-3. **Best Practices**:
-   - Use clear images
-   - Make sure main object is visible
-   - For people: include face if possible
-   - For animals: choose clear features
-   - For plants: prefer green plants
+3. Set up environment variables:
+Create a `.env` file in the project root with your Clarifai API key:
+```
+CLARIFAI_API_KEY=your_api_key_here
+```
 
-## Future Plans
+4. Run the application:
+```bash
+python app.py
+```
 
-1. Add more categories
-2. Add user feedback system
-3. Add image pre-processing
-4. Add batch processing
-5. Make mobile-friendly
+5. Open your browser and visit:
+```
+http://localhost:5000
+```
 
-## License
+## Usage
 
-[MIT License](LICENSE) 
+1. Click "选择文件" to select one or more images
+2. Preview selected images
+3. Remove unwanted images using the × button
+4. Click "上传并分类" to process the images
+5. View classification results with confidence scores
+
+## Supported Image Formats
+
+- PNG
+- JPG/JPEG
+- GIF
+
+## Error Handling
+
+The application provides feedback for:
+- No file selected
+- Unsupported file types
+- Processing errors
+- API failures
+
+## Dependencies
+
+- Flask
+- Pillow
+- numpy
+- requests
+- scipy
+- python-dotenv 
