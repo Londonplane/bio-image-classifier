@@ -19,43 +19,50 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def upload_file():
-    if request.method == 'POST':
-        # 检查是否有文件
-        if 'file' not in request.files:
-            flash('没有选择文件')
-            return redirect(request.url)
-        
-        file = request.files['file']
-        
-        # 如果用户没有选择文件
-        if file.filename == '':
-            flash('没有选择文件')
-            return redirect(request.url)
-        
+    return render_template('index.html')
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'files' not in request.files:
+        flash('没有选择文件')
+        return redirect(url_for('upload_file'))
+    
+    files = request.files.getlist('files')
+    if not files or files[0].filename == '':
+        flash('没有选择文件')
+        return redirect(url_for('upload_file'))
+    
+    results = []
+    for file in files:
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
             
-            # 使用模型进行预测
-            category, confidence = classifier.predict(file_path)
-            
-            return render_template('result.html', 
-                                  filename=filename, 
-                                  category=category, 
-                                  confidence=round(confidence * 100, 2))
+            # 使用分类器处理图片
+            try:
+                category, confidence = classifier.predict(filepath)
+                results.append({
+                    'filename': filename,
+                    'category': category,
+                    'confidence': confidence
+                })
+            except Exception as e:
+                flash(f'处理文件时出错: {filename} - {str(e)}')
         else:
-            flash('不支持的文件类型')
-            return redirect(request.url)
+            flash(f'不支持的文件类型: {file.filename}')
     
-    return render_template('index.html')
+    if not results:
+        flash('没有成功处理任何文件')
+        return redirect(url_for('upload_file'))
+    
+    return render_template('result.html', results=results)
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    # 修改为允许从任何主机访问，并使用端口8080
-    app.run(debug=True, host='0.0.0.0', port=8080) 
+    app.run(debug=True, port=5000) 
