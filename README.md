@@ -36,11 +36,8 @@ A simple web application that can classify images into three categories: Human, 
    ```
 
 4. Set up environment variables:
-   - Copy `.env.example` to `.env`:
-     ```bash
-     cp .env.example .env
-     ```
-   - Add your Clarifai API key in `.env`:
+   - Create a new file named `.env` in the project root
+   - Add your Clarifai API key to the file:
      ```
      CLARIFAI_API_KEY=your_api_key_here
      ```
