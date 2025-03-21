@@ -1,131 +1,99 @@
-# 图片分类应用
+# Bio Image Classifier
 
-这是一个基于深度学习和图像特征分析的图片分类应用，可以将上传的图片分类为"人"、"动物"或"植物"三种标签。
+A simple web application that can classify images into three categories: Human, Animal, or Plant.
 
-## 功能特点
+## Features
 
-- **双重分类机制**：
-  - 主要使用Clarifai API（基于MobileNet V2等深度学习模型）进行图像识别
-  - 备用本地特征分析系统，在API不可用时自动切换
-- **用户友好界面**：
-  - 简洁的Web界面，支持图片上传和结果展示
-  - 显示分类结果和置信度
-- **高准确率**：
-  - 利用预训练深度学习模型进行分类
-  - 多种图像特征综合分析
-  - 智能规则系统提高准确率
+- **Image Classification**:
+  - Uses Clarifai API for deep learning based classification
+  - Has local backup system when API is unavailable
+- **User-Friendly Interface**:
+  - Easy to use web interface
+  - Upload images and see results instantly
+- **High Accuracy**:
+  - Uses pre-trained deep learning models
+  - Smart rules for better results
 
-## 安装步骤
+## How to Install
 
-1. 克隆此仓库：
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Londonplane/bio-image-classifier.git
+   cd bio-image-classifier
    ```
-   git clone <仓库地址>
-   cd 图片分类应用
-   ```
 
-2. 创建虚拟环境（推荐）：
-   ```
+2. Create virtual environment (recommended):
+   ```bash
    python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   # 或
-   venv\Scripts\activate  # Windows
+   source venv/bin/activate  # For Linux/Mac
+   # OR
+   venv\Scripts\activate  # For Windows
    ```
 
-3. 安装依赖项：
-   ```
+3. Install required packages:
+   ```bash
    pip install -r requirements.txt
    ```
 
-4. 配置环境变量：
-   - 复制`.env.example`文件并重命名为`.env`：
+4. Set up environment variables:
+   - Copy `.env.example` to `.env`:
      ```bash
      cp .env.example .env
      ```
-   - 在`.env`文件中填入您的Clarifai API密钥：
+   - Add your Clarifai API key in `.env`:
      ```
      CLARIFAI_API_KEY=your_api_key_here
      ```
-   - 您可以在[Clarifai官网](https://clarifai.com/)注册账户并获取API密钥
+   - Get your API key from [Clarifai website](https://clarifai.com/)
 
-## 使用方法
+## How to Use
 
-1. 启动应用：
-   ```
+1. Start the application:
+   ```bash
    python app.py
    ```
 
-2. 在浏览器中访问：
+2. Open your web browser and go to:
    ```
-   http://localhost:8080
+   http://localhost:5000
    ```
 
-3. 上传图片并查看分类结果：
-   - 点击"选择文件"按钮，选择一张图片
-   - 点击"上传并分类"按钮
-   - 查看分类结果和置信度
+3. Upload an image and click "Submit"
+4. See the classification result
 
-## 技术细节
+## Project Structure
 
-### 1. 分类系统
+- `app.py`: Main Flask application
+- `model.py`: Image classification logic
+- `templates/`: HTML files
+- `uploads/`: Folder for uploaded images
+- `requirements.txt`: Required Python packages
 
-本应用采用双重分类机制：
+## Notes
 
-#### 主要方法：Clarifai API
+1. **API Limits**:
+   - Free Clarifai account has API call limits
+   - Local system works when API is not available
 
-- 使用Clarifai的通用图像识别API（基于MobileNet V2等深度学习模型）
-- 将API返回的概念映射到"人"、"动物"、"植物"三个类别
-- 通过关键词匹配和置信度累加进行分类
+2. **API Key Safety**:
+   - Keep your API key secret
+   - Never share your `.env` file
 
-#### 备用方法：本地特征分析
+3. **Best Practices**:
+   - Use clear images
+   - Make sure main object is visible
+   - For people: include face if possible
+   - For animals: choose clear features
+   - For plants: prefer green plants
 
-当API不可用时，自动切换到本地特征分析：
+## Future Plans
 
-- **颜色特征**：平均RGB值、颜色标准差、肤色区域比例、绿色区域比例
-- **纹理特征**：边缘检测、梯度分析
-- **智能规则**：基于领域知识的启发式规则
+1. Add more categories
+2. Add user feedback system
+3. Add image pre-processing
+4. Add batch processing
+5. Make mobile-friendly
 
-### 2. Web应用框架
+## License
 
-- 使用Flask框架构建Web应用
-- 支持图片上传、处理和结果展示
-- 响应式设计，适配不同设备
-
-## 文件结构
-
-- `app.py`：Flask应用主文件
-- `model.py`：图像分类模型实现
-- `templates/`：HTML模板文件
-  - `index.html`：上传页面
-  - `result.html`：结果显示页面
-- `uploads/`：存储上传的图片
-- `requirements.txt`：项目依赖项
-- `README.md`：项目说明文档
-
-## 注意事项
-
-1. **API限制**：
-   - Clarifai免费账户有API调用次数限制
-   - 超过限制后会自动切换到本地特征分析
-
-2. **API密钥安全**：
-   - 不要将API密钥提交到公共代码库
-   - 在生产环境中，应将API密钥存储在环境变量或配置文件中
-
-3. **最佳实践**：
-   - 使用清晰的图片获得最佳结果
-   - 确保图片中的主体明显
-   - 对于人物照片，尽量包含面部
-   - 对于动物照片，尽量选择特征明显的动物
-   - 对于植物照片，尽量选择绿色植物
-
-## 未来改进
-
-1. 增加更多分类类别
-2. 实现用户反馈机制，收集错误分类案例
-3. 添加图片预处理功能，提高分类准确率
-4. 实现批量处理功能，允许一次上传多张图片
-5. 优化移动端体验
-
-## 许可证
-
-[MIT许可证](LICENSE) 
+[MIT License](LICENSE) 
